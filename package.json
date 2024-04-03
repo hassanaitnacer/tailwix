@@ -1,0 +1,52 @@
+{
+  "name": "tailwix",
+  "version": "1.0.6",
+  "private": false,
+  "description": "Power of Tailwind CSS + Radix Colors",
+  "author": "Hassan Ait Nacer <itshassannacer@gmail.com> (https://github.com/hassanaitnacer)",
+  "repository": "https://github.com/hassanaitnacer/tailwix.git",
+  "bugs": "https://github.com/hassanaitnacer/tailwix/issues",
+  "keywords": [
+    "Tailwind CSS",
+    "Radix Colors",
+    "Radix UI",
+    "Colors",
+    "CSS"
+  ],
+  "scripts": {
+    "build": "pnpm clean && pnpm i && rollup -c && pnpm build-css-modules",
+    "build-css-modules": "node ./scripts/build-css-modules.js",
+    "prepublishOnly": "pnpm build",
+    "postpublish": "pnpm clean",
+    "clean": "git clean -fdX"
+  },
+  "exports": {
+    ".": {
+      "style": "./index.css"
+    },
+    "./package.json": "./package.json",
+    "./index.css": "./index.css",
+    "./index": "./index.css"
+  },
+  "style": "index.css",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "index.css",
+    "colors.css",
+    "theme.css",
+    "colors/*"
+  ],
+  "dependencies": {
+    "@radix-ui/colors": "^3.0.0"
+  },
+  "peerDependencies": {
+    "tailwindcss": "^4.0.0-alpha.1"
+  },
+  "devDependencies": {
+    "@rollup/plugin-json": "^6.1.0",
+    "rollup": "^4.13.2"
+  },
+  "license": "ISC"
+}
