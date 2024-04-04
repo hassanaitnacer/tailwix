@@ -4,7 +4,7 @@ Tailwix = Power of [Tailwind CSS](https://tailwindcss.com) + [Radix Colors](http
 
 ## Motivation
 
-Ever struggled with choosing and managing colors for your website when switching between dark and light mode, finding yourself spreading the `:dark` variant across all of your files? I have, which is why I created this package to make this simpler. It combines all the features of Tailwind CSS with a big and REALLY AWESOME collection of colors from Radix.
+Ever struggled with choosing and managing colors for your website when switching between dark and light mode, finding yourself spreading the `dark` variant across all of your files? I have, which is why I created this package to make this simpler. It combines all the features of Tailwind CSS with a big and REALLY AWESOME collection of colors from Radix.
 
 ## Features
 
@@ -72,7 +72,7 @@ Let's create a button using the `ruby` color scale:
 
 > Note that we did NOT need to invert colors in dark mode using the [`:dark`](https://tailwindcss.com/docs/dark-mode) variant.
 
-If the class name of the root element (or any wrapper element) is empty or includes `.light` or .`light-theme`, the **light scales** will be used. Conversely, if it includes `.dark` or `.dark-theme`, it will use the **dark scale**.
+If the class name of the root element (or any wrapper element) is empty or includes `.light` and/or .`light-theme`, the **light scales** will be applied. Conversely, if it includes `.dark` and/or `.dark-theme`,the **dark scales** will be applied instead.
 
 ### Result
 
