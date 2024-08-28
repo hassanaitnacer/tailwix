@@ -9,8 +9,11 @@ dependencies:
     specifier: ^3.0.0
     version: 3.0.0
   tailwindcss:
-    specifier: ^4.0.0-alpha.1
-    version: 4.0.0-alpha.11
+    specifier: ^4.0.0-alpha.19
+    version: 4.0.0-alpha.20
+  tailwix:
+    specifier: 'link:'
+    version: 'link:'
 
 devDependencies:
   '@rollup/plugin-json':
@@ -220,6 +223,6 @@ packages:
       fsevents: 2.3.3
     dev: true
 
-  /tailwindcss@4.0.0-alpha.11:
-    resolution: {integrity: sha512-tcRCkmHk2ACB5bghyizZG4pVA/SCr9BEE/Gbjex4axCRGQNFjbJJ3uXR/2d+ItCAUxSKYgy5LhlJc6mR8dDnrQ==}
+  /tailwindcss@4.0.0-alpha.20:
+    resolution: {integrity: sha512-ULNYqtGezc5R2mPLv/UpJBxBDllVrGHbMdO/y+irV/nZO+OnrI+qXX+lYWEsBn2tk1p5bmAOuI8wMXZDNap0Pw==}
     dev: false

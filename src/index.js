@@ -1,4 +1,5 @@
 import colors from './colors.json'
-import { style as styleCssEntry } from '../package.json'
+import alphaOnlyColors from './alpha-only-colors.json'
+import { style as styleIndexPath } from '../package.json'
 
-export default { colors, styleCssEntry }
+export default { colors, alphaOnlyColors, styleIndexPath }

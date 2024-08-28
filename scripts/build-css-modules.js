@@ -1,101 +1,104 @@
-const fs = require('fs')
-const path = require('path')
-const { colors, styleCssEntry } = require('../index')
+const fs = require('fs');
+const path = require('path');
+const { colors, alphaOnlyColors, styleIndexPath } = require('../index');
 
-const colorsOutputDir = './colors'
-const radixColorsPath = '@radix-ui/colors'
-const colorsCssFilePath = './colors.css'
-const themeCssFilePath = './theme.css'
-
-const stepsRange = [1, 12]
-const steps = range(...stepsRange)
-const alphaSteps = steps.map((step) => `a${step}`)
-const allSteps = [...steps, ...alphaSteps]
-
-if (!fs.existsSync(colorsOutputDir)) {
-  fs.mkdirSync(colorsOutputDir, { recursive: true })
+const colorsOutDir = './colors';
+if (!fs.existsSync(colorsOutDir)) {
+  fs.mkdirSync(colorsOutDir, { recursive: true });
 }
 
-// ! Clearing the color namespace (must be at the top)
-let tailwindThemeVariables = [generateTailwindCssVariable('*', 'initial')]
+// Generates the @import statements
+function generateImportStatements(color, isAlpha) {
+  const baseImport = `@import '@radix-ui/colors/${color}${isAlpha ? '-alpha' : ''}.css';`;
+  const darkImport = alphaOnlyColors.includes(color)
+    ? ''
+    : `@import '@radix-ui/colors/${color}${isAlpha ? '-dark-alpha' : '-dark'}.css';`;
 
-colors.forEach((color) => {
-  const colorVariants = generateColorVariants(color)
-  const cssImports = colorVariants
-    .map(
-      (variant) => `@import "${path.join(radixColorsPath, `${variant}.css`)}";`
-    )
-    .join('\n')
-
-  const filename = `${color}.css`
-  const filePath = path.join(colorsOutputDir, filename)
-
-  fs.writeFileSync(filePath, cssImports)
-  fs.appendFileSync(colorsCssFilePath, `@import "${filePath}";\n`)
-
-  tailwindThemeVariables.push(
-    ...generateColorStepsCssVariables(
-      color,
-      isBlackOrWhite(color) ? alphaSteps : allSteps
-    )
-  )
-})
-
-// Theme CSS file
-let cssThemeRule = '@theme {\n'
-cssThemeRule += tailwindThemeVariables
-  .map((variable) => `\t${variable}`)
-  .join('\n')
-cssThemeRule += '\n}'
-fs.writeFileSync(themeCssFilePath, cssThemeRule)
-
-// Entry CSS file
-fs.writeFileSync(
-  styleCssEntry,
-  [
-    `@import "${colorsCssFilePath}" layer(base);`,
-    `@import "${themeCssFilePath}";`,
-  ].join('\n')
-)
-
-/* --------------------------------- Helpers -------------------------------- */
-
-function generateColorStepsCssVariables(color, steps) {
-  const cssVariables = []
-  if (color === 'black') {
-    cssVariables.push(generateTailwindCssVariable('black', '#000'))
-  } else if (color === 'white') {
-    cssVariables.push(generateTailwindCssVariable('white', '#fff'))
-  }
-
-  steps.forEach((step) => {
-    const cssVariable = generateTailwindCssVariable(
-      `${color}-${step}`,
-      `var(--${color}-${step})`
-    )
-
-    cssVariables.push(cssVariable)
-  })
-
-  return cssVariables
+  return [baseImport, darkImport].filter(Boolean).join('\n');
 }
 
-function generateColorVariants(color) {
-  if (isBlackOrWhite(color)) {
-    return [`${color}-alpha`]
-  }
+// Generates the theme content
+function generateThemeContent(color, isAlpha) {
+  const variant = isAlpha ? 'a' : '';
+  const steps = 12;
 
-  return [color, `${color}-dark`, `${color}-alpha`, `${color}-dark-alpha`]
+  return Array.from({ length: steps }, (_, index) => {
+    const step = index + 1;
+    return `  --color-${color}-${variant}${step}: var(--${color}-${variant}${step});`;
+  }).join('\n');
 }
 
-function generateTailwindCssVariable(suffix, value) {
-  return `--color-${suffix}: ${value};`
+// Generates CSS content
+function generateCSSContent(color, isAlpha = false) {
+  const importStatements = generateImportStatements(color, isAlpha);
+  const themeContent = generateThemeContent(color, isAlpha);
+
+  return `
+${importStatements}
+
+@theme inline {
+${themeContent}
+}
+  `.trim();
 }
 
-function isBlackOrWhite(color) {
-  return color === 'black' || color === 'white'
+// Writes the content to a CSS file
+function writeCSSFile(color, isAlpha = false) {
+  const fileName = path.join(colorsOutDir, `${color}${isAlpha ? '-alpha' : ''}.css`);
+  const content = generateCSSContent(color, isAlpha);
+
+  fs.writeFileSync(fileName, content);
+  console.log(`Generated ${fileName}`);
 }
 
-function range(min, max) {
-  return Array.from({ length: max - min + 1 }, (_, index) => index + min)
+// Generates specific CSS file for solid colors (e.g., white and black)
+function generateSolidColorCSS(color, hexValue) {
+  const content = `
+@theme {
+  --color-${color}: ${hexValue};
 }
+  `.trim();
+
+  fs.writeFileSync(path.join(colorsOutDir, `${color}.css`), content);
+  console.log(`Generated ${color}.css`);
+}
+
+// Generates index.css that imports all colors
+function generateIndexCSS() {
+  const importStatements = [
+    `@import './colors/white.css';`,
+    `@import './colors/black.css';`,
+    ...colors.map(color => `@import './colors/${color}.css';`),
+    '',
+    ...colors.map(color => `@import './colors/${color}-alpha.css';`),
+    ...alphaOnlyColors.map(color => `@import './colors/${color}-alpha.css';`)
+  ].join('\n');
+
+  const indexCSSContent = importStatements.trim();
+
+  fs.writeFileSync(styleIndexPath, indexCSSContent);
+  console.log(`Generated ${styleIndexPath}`);
+}
+
+// Entry point: Generate all CSS files
+function generateAllCSSFiles() {
+  colors.forEach((color) => {
+    writeCSSFile(color);        // standard CSS file
+    writeCSSFile(color, true);  // alpha variant CSS file
+  });
+
+  alphaOnlyColors.forEach((color) => {
+    writeCSSFile(color, true);  // only generate alpha variant for alpha-only colors
+  });
+
+  // generate CSS for solid colors
+  generateSolidColorCSS('white', '#fff');
+  generateSolidColorCSS('black', '#000');
+
+  // generate index.css
+  generateIndexCSS();
+
+  console.log('All CSS files generated successfully.');
+}
+
+generateAllCSSFiles();
