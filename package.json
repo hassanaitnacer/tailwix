@@ -1,10 +1,13 @@
 {
   "name": "tailwix",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "private": false,
   "description": "Power of Tailwind CSS + Radix Colors",
   "author": "Hassan Ait Nacer <itshassannacer@gmail.com> (https://github.com/hassanaitnacer)",
-  "repository": "https://github.com/hassanaitnacer/tailwix.git",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hassanaitnacer/tailwix.git"
+  },
   "bugs": "https://github.com/hassanaitnacer/tailwix/issues",
   "keywords": [
     "Tailwind CSS",
