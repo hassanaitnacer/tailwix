@@ -8,17 +8,18 @@ Ever struggled with choosing and managing colors for your website when switching
 
 ## Features
 
-✅ 33 different color scales.\
+✅ 31 different color scales.\
+✅ Black and white including their alpha scales.\
 ✅ 12 steps (from `1` to `12`) per color scale.\
-✅ 12 alpha steps (from `a1` to `a12`) per color scale.\
+✅ 12 alpha steps (from `a1` to `a12`) per alpha color scale.\
 ✅ Simplified color naming conventions aligned with Radix Colors standards.\
 ✅ Handling of light and dark mode themes based on HTML element class names.
 
 ## Get Started
 
-To get going with Tailwix, make sure you have the pre-release version (v4 alpha) of Tailwind CSS installed.
+To get going with Tailwix, make sure you have the pre-release version (v4 alpha-19 or higher) of Tailwind CSS installed.
 
-### Install Tailwind CSS v4 Alpha
+### Install Tailwind CSS v4 Alpha 19 or higher
 
 Just follow the [steps](https://tailwindcss.com/blog/tailwindcss-v4-alpha#try-out-the-alpha) in one of the official Tailwind CSS blogs to install the v4 alpha release.
 
@@ -49,12 +50,48 @@ Import the Tailwind CSS styles, and then import Tailwix right after:
 @import 'tailwix';
 ```
 
-This will clear the color namespace from Tailwind CSS and give you access to a whole bunch of new colors to use in your project!
+If you want to import only some specific colors to decrease the final CSS output:
 
-- There are 33 different color scales (red, green, blue, etc.), including black and white alpha values.
+```css
+@import 'tailwindcss';
+
+@import 'tailwix/colors/white.css';
+@import 'tailwix/colors/white-alpha.css';
+
+@import 'tailwix/colors/black.css';
+@import 'tailwix/colors/black-alpha.css';
+
+@import 'tailwix/colors/red.css';
+@import 'tailwix/colors/red-alpha.css';
+
+@import 'tailwix/colors/blue.css';
+@import 'tailwix/colors/blue-alpha.css';
+```
+
+This will not clear the color namespace from Tailwind CSS but give you access to a whole bunch of new colors to use in your project!
+
+- There are 33 different color scales (red, green, blue, etc.), including black and white.
 - Each color scale has light and dark versions (at least to handle contrast issues).
 - Each color scale consists of 12 steps ranging from `1` to `12` (equivalent to Tailwind CSS's range from `50` to `950`).
 - Each color scale consists of 12 alpha steps ranging from `a1` to `a12`.
+
+To clear remove Tailwind colors you can just create a new CSS file `clear.css` with the following content:
+
+```css
+@theme {
+    --color-*: initial;
+}
+```
+
+Then import it before importing Tailwix:
+
+```css
+@import 'tailwindcss';
+@import './path/to/clear.css';
+
+/* then import anything you want from Tailwix */
+@import 'tailwix';
+```
 
 For more information about naming conventions and other related details, refer to [Radix Colors](https://www.radix-ui.com/colors).
 
