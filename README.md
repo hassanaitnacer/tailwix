@@ -17,11 +17,11 @@ Ever struggled with choosing and managing colors for your website when switching
 
 ## Get Started
 
-To get going with Tailwix, make sure you have the pre-release version (v4 alpha-19 or higher) of Tailwind CSS installed.
+To get going with Tailwix, make sure you have the latest version of Tailwind CSS installed.
 
-### Install Tailwind CSS v4 Alpha 19 or higher
+### Install Tailwind CSS v4
 
-Just follow the [steps](https://tailwindcss.com/blog/tailwindcss-v4-alpha#try-out-the-alpha) in one of the official Tailwind CSS blogs to install the v4 alpha release.
+Just follow the [steps](https://tailwindcss.com/docs/installation) mentioned in their official blog.
 
 ### Install Tailwix
 
